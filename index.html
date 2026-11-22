@@ -17,6 +17,9 @@
    ======================================================================== */
 var API_URL = 'https://script.google.com/macros/s/AKfycbypByHNX5xHDb6ApaKHe1wQXCMHxc-13nuKLT1BOBTe8kBt7qRTKS1tXH0L_-Xceb2c/exec';
 var MOBILE_ONLY = true;   // true = orang awam hanya boleh guna telefon bimbit
+
+/* Link Buku Program — dipaparkan selepas ibu bapa sahkan kehadiran */
+var BUKU_PROGRAM_URL = 'https://canva.link/majlis-apresiasi-sk-sungai-binjai-2026';
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -158,6 +161,8 @@ label.lb{display:block;font-family:Orbitron,sans-serif;font-size:10px;letter-spa
 .btn::after{content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.65),transparent);transform:skewX(-20deg);animation:shine 2.8s ease-in-out infinite}
 @keyframes shine{60%,100%{left:130%}}
 .btn[disabled]{opacity:.6}
+.btn.book{display:block;text-align:center;text-decoration:none}
+.lnk{display:block;margin:14px auto 0;background:none;border:0;color:var(--muted);font:inherit;font-size:13px;text-decoration:underline;text-underline-offset:3px}
 .btn.ghost{background:rgba(255,255,255,.05);color:#e6ecff;border:1px solid rgba(255,255,255,.16);box-shadow:none;font-size:12.5px;letter-spacing:.12em}
 .btn.ghost::after{display:none}
 .btn.blue{background:linear-gradient(100deg,#1d4fd8,#3d82ff 50%,#1d4fd8);color:#fff;box-shadow:0 10px 30px -10px rgba(42,107,255,.8)}
@@ -287,6 +292,7 @@ label.lb{display:block;font-family:Orbitron,sans-serif;font-size:10px;letter-spa
 (function(){
 'use strict';
 var B = window.BOOT, DATA = B.data || [];
+var BUKU = String(window.BUKU_PROGRAM_URL||'').trim(); if (!/^https?:\/\//.test(BUKU)) BUKU = '';
 var CAT = {MURID:'Murid', GURU:'Guru & Staf', UNIT:'Unit & Panitia'};
 var status = {};           // id -> time
 var filter = '', token = null, adminRows = [];
@@ -421,7 +427,9 @@ function showDone(r, res, already){
       (res.ref?'<div class="row"><span>No. rujukan</span><b class="ref">'+esc(res.ref)+'</b></div>':'')+
     '</div>'+
     '<p class="note" style="text-align:center">Sila tangkap layar (screenshot) skrin ini sebagai rujukan semasa pendaftaran di majlis.</p>'+
-    '<button class="btn ghost" id="again">CARI NAMA LAIN</button></div>');
+    (BUKU ? '<a class="btn book" href="'+esc(BUKU)+'" target="_blank" rel="noopener">📖 BUKU PROGRAM</a>'+
+            '<button class="lnk" id="again">Ada penerima lain? Cari nama lain</button>'
+          : '<button class="btn ghost" id="again">CARI NAMA LAIN</button>')+'</div>');
   $('again').onclick = function(){ closeSheet(); $('q').value=''; search(); setTimeout(function(){$('q').focus()},300); };
 }
 
